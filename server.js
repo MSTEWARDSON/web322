@@ -67,7 +67,7 @@ app.get("/", function(req,res) {
     });
 });
 
-//About route
+//About route (updated to use handlebars)
 app.get("/about", function(req,res) {
     res.render('about', {
         layout: "main"
@@ -136,7 +136,7 @@ app.get("/employees", (req,res)=> {
     }
 });
 
-//Employee add route
+//Employee add route (updated to use handlebars)
 app.get("/employees/add", (req,res)=> {
     res.render('addEmployee', {
         layout: "main"
@@ -163,7 +163,7 @@ app.get("/employees/:num", function (req, res) {
 // Image viewing and adding routes                                  //
 //==================================================================//
 
-//Image add route
+//Image add route (updated to use handlebars)
 app.get("/images/add", (req,res)=> {
     res.render('addImage', {
         layout: "main"
@@ -187,11 +187,13 @@ app.get("/images", function (req, res) {
     });
 });
 
-//no-matching route, custom 404 page
+//no-matching route, custom 404 page (updated to use handlebars)
 app.use(function(req,res) { 
     res.status(404);
     //Respond with custom 404 page
-    res.sendFile(path.join(__dirname,"/views/404.html"));
+    res.render('404', {
+        layout: "main"
+    });
 });
 
 //==================================================================//
