@@ -18,6 +18,7 @@ var dataService = require("./data-service.js");
 const fs = require('fs');
 const employeeData = require("./data/employees.json");     //My two json files
 const departmentData = require("./data/departments.json");
+const exphbs = require('express-handlebars');
 
 //Middleware
 var app = express();
@@ -29,6 +30,16 @@ var HTTP_PORT = process.env.PORT || 8080;
 function onHttpStart() {
     console.log("Express http server listening on: " + HTTP_PORT);
 }
+//==================================================================//
+// Handlebars setup                                                 //
+//==================================================================//
+
+app.engine('.hbs', exphbs({ 
+    extname: '.hbs',
+    defaulLayout: 'main',
+    layoutDir: __dirname + '/views/layouts'
+}));
+app.set('view engine', '.hbs');
 
 //==================================================================//
 // Image upload setup                                               //
@@ -49,16 +60,18 @@ const upload = multer({ storage: storage });
 // Routes                                                           //
 //==================================================================//
 
-//Home route
+//Home route (updated to use handlebars)
 app.get("/", function(req,res) {
-    //Respond with home.html
-    res.sendFile(path.join(__dirname,"/views/home.html"));
+    res.render('home', {
+        layout: "main"
+    });
 });
 
 //About route
 app.get("/about", function(req,res) {
-    //Respond with about/html
-    res.sendFile(path.join(__dirname,"/views/about.html"));
+    res.render('about', {
+        layout: "main"
+    });
 });
 
 //Managers route
@@ -125,7 +138,9 @@ app.get("/employees", (req,res)=> {
 
 //Employee add route
 app.get("/employees/add", (req,res)=> {
-    res.sendFile(path.join(__dirname,"/views/addEmployee.html"));
+    res.render('addEmployee', {
+        layout: "main"
+    });
 });
 
 app.post("/employees/add", function (req, res) {
@@ -150,7 +165,9 @@ app.get("/employees/:num", function (req, res) {
 
 //Image add route
 app.get("/images/add", (req,res)=> {
-    res.sendFile(path.join(__dirname,"/views/addImage.html"));
+    res.render('addImage', {
+        layout: "main"
+    });
 });
 
 //Prepare to receive file and then go to images page
