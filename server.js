@@ -135,6 +135,7 @@ app.post("/employees/add", function (req, res) {
         });
 });
 
+//Allows the user to search for a certain employee by number through the url
 app.get("/employees/:num", function (req, res) {
     dataService.getEmployeeByNum(req.params.num).then((data) => {
         res.json(data)
