@@ -1,11 +1,12 @@
 //Requires
-//fs is for the file system module that allows us to read and  write files
 const fs = require('fs'); //File system
+
 //Global arrays
 var employees = [];
 var departments = [];
+
 //initalize function, loads JSON data into the above global arrays
-exports.initialize = function() {
+module.exports.initialize = function() {
     return new Promise((resolve, reject)=> {
         try {
             //Try reading the file
@@ -23,8 +24,9 @@ exports.initialize = function() {
         }
     });
 }
+
 //Returns the employee list in JSON format to the server.js file
-exports.getAllEmployees = function() {
+module.exports.getAllEmployees = function() {
     return new Promise((resolve, reject)=>{
         if (employees.length > 0) {
             resolve(employees);
@@ -34,8 +36,9 @@ exports.getAllEmployees = function() {
         }
     });
 }
+
 //Returns the list of employees but only ones that are mangers
-exports.getManagers = function() {
+module.exports.getManagers = function() {
     return new Promise((resolve, reject)=>{
         //Array that will hold JSON data from employees.json
         var manager = [];
@@ -45,20 +48,99 @@ exports.getManagers = function() {
                 manager.push(element);
             }
         });
-        if (manager.length === 0) {
+        if (manager.length == 0) {
             var err = "getManagers() does not have any data"
             reject({message: err});
         }
         resolve(manager);
     })
 }
+
 //Responds with department json data
-exports.getDepartments = function() {
+module.exports.getDepartments = function() {
     return new Promise((resolve, reject) =>{
-        if(departments.lenth === 0) {
+        if(departments.lenth == 0) {
             var err = "getDepartments() does not have any data";
             reject({message: err});
         }
         resolve(departments);
     })
+}
+
+//Add New Employee
+module.exports.addEmployee = function (employeeData) {
+    return new Promise((resolve, reject) => {
+        //If the user did not select "manager", set isManager to false
+        if (typeof employeeData.isManager === "undefined") {
+            employeeData.isManager = false;
+        } else {
+            employeeData.isManager = true;
+        }
+        //Set the new employee number to be +1 of whatever is the highest atm
+        employeeData.employeeNum = employees.length + 1;
+        //Push new employee to json file
+        employees.push(employeeData);
+        resolve(employeeData);
+    });
+}
+
+//Filter for employee status
+module.exports.getEmployeeByStatus = function (status) {
+    return new Promise((resolve, reject)=>{
+        //Using "filter" method to search the employee array
+        //In this case im looking for employees that match the status of "full time" or "part time" based on what the user queryed for
+        let filteredEmp = employees.filter(employees => employees.status == status);
+        //If the status is 0, error msg
+        if (filteredEmp.length == 0) {
+            var err = "getEmployeeByStatus() No results returned";
+            reject({message: err});
+        }
+        resolve(filteredEmp);
+    });
+}
+
+//Filter for employee department (Works the same as getEmployeeByStatus)
+module.exports.getEmployeeByDepartment = function (department) {
+    return new Promise((resolve, reject)=>{
+        let filteredEmp = employees.filter(employees => employees.department == department);
+        if (filteredEmp.length == 0) {
+            var err = "getEmployeeByDepartment() No results returned";
+            reject({message: err});
+        }
+        resolve(filteredEmp);
+    });
+}
+
+//filter for employee managers (Works the same as getEmployeeByStatus)
+module.exports.getEmployeeByManager = function (manager) {
+    return new Promise((resolve, reject)=>{
+        let filteredEmp = employees.filter(employees => employees.employeeManagerNum == manager);
+        if (filteredEmp.length == 0) {
+            var err = "getEmployeeByManager() No results returned";
+            reject({message: err});
+        }
+        resolve(filteredEmp);
+    });
+}
+
+//filter for employee number
+module.exports.getEmployeeByNum = function (num) {
+    let filteredEmp;
+    return new Promise((resolve, reject)=>{
+        //Loop through the employee array
+        for(var i =0 ; i < employees.length; i++) {
+            //If the employee number matchs the searched for num
+            if (employees[i].employeeNum == num) {
+                //Answer is found so we set filteredEmp to the current employee
+                //i is then set to the length of the array to exit the loop
+                filteredEmp = employees[i];
+                i = employees.length;
+            }
+        }
+        if (num == 0 || num > employees.length) {
+            var err = "getEmployeeByNum() No results returned";
+            reject({message: err});
+        }
+        resolve(filteredEmp);
+    });
 }
