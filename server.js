@@ -113,25 +113,25 @@ app.get("/employees", (req,res)=> {
     //Return a json string consisting of all employees where value could either be "fulltime" or "parttime"
     if (req.query.status) {
         dataService.getEmployeeByStatus(req.query.status).then((data)=>{
-            res.json(data);
-        }).catch((err) =>{
-            res.json({message: err});
+            res.render("employees",{employees: data});
+        }).catch(() =>{
+            res.render({message: "no results"});
         })
     }
     //Return a json string consisting of all employees where value could be one 1,2,3,..7 (7 departments in dataset)
     else if (req.query.department) {
         dataService.getEmployeeByDepartment(req.query.department).then((data)=>{
-            res.json(data);
-        }).catch((err)=>{
-            res.json({message: err});
+            res.render("employees",{employees: data});
+        }).catch(()=>{
+            res.render({message: "no results"});
         })
     } 
     //Return a json string consisting of all employees where value could be one 1,2,3,...30 (currenting 30 managers in dataset)
     else if (req.query.manager) {
         dataService.getEmployeeByManager(req.query.manager).then((data)=>{
-            res.json(data);
-        }).catch((err)=>{
-            res.json({message: err});
+            res.render("employees",{employees: data});
+        }).catch(()=>{
+            res.render({message: "no results"});
         })
     } 
     //Return a json string of all employees with no filter (orginal from assignment #2)
@@ -139,9 +139,9 @@ app.get("/employees", (req,res)=> {
         //Call our dataservice.js file and use the getAllEmpployees function to retrieve data
         dataService.getAllEmployees().then((data)=>{
             //Respond with employee json data
-            res.json(data);
-        }).catch((err)=>{
-            res.json({message: err});
+            res.render("employees",{employees: data});
+        }).catch(()=>{
+            res.render({message: "no results"});
         });
     }
 });
