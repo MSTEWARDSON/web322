@@ -25,7 +25,12 @@ var app = express();
 app.use(express.static('public')); //'static' middleware to allow the use of css and images contained in the file
 app.use(bodyParser.urlencoded({extended: true})); 
 var HTTP_PORT = process.env.PORT || 8080;
-
+app.use(function(req,res,next){
+    let route = req.baseUrl + req.path;
+    app.locals.activeRoute = (route == "/") ? "/" : route.replace(/\/$/, "");
+    next();
+});
+   
 //Start listening for requests
 function onHttpStart() {
     console.log("Express http server listening on: " + HTTP_PORT);
@@ -37,7 +42,22 @@ function onHttpStart() {
 app.engine('.hbs', exphbs({ 
     extname: '.hbs',
     defaulLayout: 'main',
-    layoutDir: __dirname + '/views/layouts'
+    layoutDir: __dirname + '/views/layouts',
+    helpers: {
+        navLink: function(url, options) {
+            return '<li' + ((url == app.locals.activeRoute) ? ' class="active" ' : '') + 
+            '><a href="' + url + '">' + options.fn(this) + '</a></li>';
+        },
+        equal: function (lvalue, rvalue, options) {
+            if (arguments.length < 3)
+                throw new Error("Handlebars Helper equal needs 2 parameters");
+            if (lvalue != rvalue) {
+                return options.inverse(this);
+            } else {
+                return options.fn(this);
+            }
+        }     
+    }
 }));
 app.set('view engine', '.hbs');
 
@@ -71,16 +91,6 @@ app.get("/", function(req,res) {
 app.get("/about", function(req,res) {
     res.render('about', {
         layout: "main"
-    });
-});
-
-//Managers route
-app.get("/managers", (req,res)=> {
-    dataService.getManagers().then((data)=>{
-        //Respond with all managers from employees
-        res.json(data);
-    }).catch((reason)=>{
-        res.json({message: reason});
     });
 });
 
@@ -183,7 +193,7 @@ app.get("/images", function (req, res) {
        for (var i = 0; i < size; i++) {
            obj.images.push(items[i]);
        }
-       res.json(obj);
+       res.render("images", obj);
     });
 });
 
