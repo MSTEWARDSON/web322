@@ -22,7 +22,7 @@ const exphbs = require('express-handlebars');
 
 //Middleware
 var app = express();
-app.use(express.static('public')); //'static' middleware to allow the use of css and images contained in the file
+app.use("/public", express.static('public')); //'static' middleware to allow the use of css and images contained in the file
 app.use(bodyParser.urlencoded({extended: true})); 
 var HTTP_PORT = process.env.PORT || 8080;
 app.use(function(req,res,next){
@@ -94,11 +94,10 @@ app.get("/about", function(req,res) {
     });
 });
 
-//departments route
+//departments route (updated to use handlebars)
 app.get("/departments", (req,res)=> {
     dataService.getDepartments().then((data)=>{
-        //Respond with all departments json data
-        res.json(data);
+        res.render("departments", {departments: data});
     }).catch((reason)=>{
         res.json({message: reason});
     });
@@ -154,18 +153,25 @@ app.get("/employees/add", (req,res)=> {
 });
 
 app.post("/employees/add", function (req, res) {
-    dataService.addEmployee(req.body)
-        .then(()=> {
+    dataService.addEmployee(req.body).then(()=> {
             res.redirect("/employees");
-        });
+    });
+});
+
+app.post("/employee/update", (req, res) => {
+    dataService.updateEmployee(req.body).then(() => {
+        res.redirect("/employees");
+    }).catch((err) => {
+        res.render({message: "no results"});
+    })
 });
 
 //Allows the user to search for a certain employee by number through the url
 app.get("/employees/:num", function (req, res) {
     dataService.getEmployeeByNum(req.params.num).then((data) => {
-        res.json(data)
+        res.render("employee", {employee: data});
     }).catch((err)=>{
-        res.json({message: err});
+        res.render("employee", {message:"no results"});
     })
 });
 
@@ -194,6 +200,17 @@ app.get("/images", function (req, res) {
            obj.images.push(items[i]);
        }
        res.render("images", obj);
+    });
+});
+
+//==================================================================//
+// Adding my own routes                                             //
+//==================================================================//
+
+//Home route (updated to use handlebars)
+app.get("/projects", function(req,res) {
+    res.render('projects', {
+        layout: "main"
     });
 });
 

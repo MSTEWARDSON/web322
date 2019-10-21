@@ -144,3 +144,24 @@ module.exports.getEmployeeByNum = function (num) {
         resolve(filteredEmp);
     });
 }
+
+module.exports.updateEmployee = function (employeeData) {
+    //Flag to indicate if the employee number was matched
+    let foundEmp = false;
+    return new Promise((resolve, reject)=>{
+        //Seach through the array of employees and find a matching num
+        for (var i=0; i < employees.length; i++){
+            if (employees[i].employeeNum == employeeData.employeeNum) {
+                employees[i] = employeeData;
+                //Now we can resolve
+                foundEmp = true;
+            }
+        }
+        //If we did not find the matching num, error msg
+        if(foundEmp === false) {
+         var err = "Cannot find employee to update.";
+         reject({message: err});
+        }  
+        resolve (employees);
+     });
+}
