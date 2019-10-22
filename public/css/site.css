@@ -2,16 +2,43 @@
 
 body {
   font-family: 'Ubuntu', sans-serif;
-  background-color: #FFFFFF !important;
-  color: #212121;
+  background-color: #1F2833 !important;
+  color: #C5C6C7;
 }
 
 .navbar {
-  background-color: #388E3C;
+  background-color: #0B0C10;
   box-shadow: 0 2px 2px -2px rgba(0,0,0,.2);
+  border: 0px #222629;
+}
+ul.nav.navbar-nav > li.active > a{
+  background-color: #1F2833;
+  color: #66FCF1;
 }
 
-.nav navbar-nav {
-  color: rgb(136, 6, 6);
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbarbar-nav > li > a:focus {
+  background-color: #1F2833;
+  color: #45A29E;
 }
 
+ h2 {
+   color: #66FCF1;
+ }
+
+ .table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
+  background-color: #222629;
+}
+
+legend {
+  color: #45A29E;
+}
+
+.btn {
+  background-color: #66FCF1;
+  color: #0B0C10;
+  font-weight: bold;
+}
+
+.container {
+  margin-top: 5%;
+}

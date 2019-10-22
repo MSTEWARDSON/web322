@@ -4,7 +4,7 @@
 * of this assignment has been copied manually or electronically from any other source
 * (including 3rd party web sites) or distributed to other students.
 *
-* Name: Matthew Stewardson Student ID: 107419194 Date: 03/10/2019
+* Name: Matthew Stewardson Student ID: 107419194 Date: 21/10/2019
 *
 * Online (Heroku) Link: 
 *
@@ -16,13 +16,14 @@ var multer = require("multer");
 var bodyParser = require("body-parser");
 var dataService = require("./data-service.js");
 const fs = require('fs');
-const employeeData = require("./data/employees.json");     //My two json files
+const employeeData = require("./data/employees.json");     
 const departmentData = require("./data/departments.json");
 const exphbs = require('express-handlebars');
 
 //Middleware
 var app = express();
 app.use("/public", express.static('public')); //'static' middleware to allow the use of css and images contained in the file
+app.use("/images", express.static('public/images')); //Had to add a second one to allow images to render properly
 app.use(bodyParser.urlencoded({extended: true})); 
 var HTTP_PORT = process.env.PORT || 8080;
 app.use(function(req,res,next){
@@ -207,7 +208,7 @@ app.get("/images", function (req, res) {
 // Adding my own routes                                             //
 //==================================================================//
 
-//Home route (updated to use handlebars)
+//projects route (own custom page)
 app.get("/projects", function(req,res) {
     res.render('projects', {
         layout: "main"
@@ -224,7 +225,7 @@ app.use(function(req,res) {
 });
 
 //==================================================================//
-// Start the server and call initialize to read the json data       //
+// Start the server and call initialize() to read the json data       //
 //==================================================================//
 
 dataService.initialize().then(()=>{
