@@ -42,3 +42,9 @@ legend {
 .container {
   margin-top: 5%;
 }
+
+img.img-thumbnail {
+  height:250px;
+  width:100%;
+  margin-top: 3%;
+}

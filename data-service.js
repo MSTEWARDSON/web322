@@ -145,6 +145,7 @@ module.exports.getEmployeeByNum = function (num) {
     });
 }
 
+//Update selected employee data values
 module.exports.updateEmployee = function (employeeData) {
     //Flag to indicate if the employee number was matched
     let foundEmp = false;
