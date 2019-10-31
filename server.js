@@ -4,7 +4,7 @@
 * of this assignment has been copied manually or electronically from any other source
 * (including 3rd party web sites) or distributed to other students.
 *
-* Name: Matthew Stewardson Student ID: 107419194 Date: 21/10/2019
+* Name: Matthew Stewardson Student ID: 107419194 Date: 31/10/2019
 *
 * Online (Heroku) Link: 
 *
@@ -24,6 +24,7 @@ const exphbs = require('express-handlebars');
 var app = express();
 app.use("/public", express.static('public')); //'static' middleware to allow the use of css and images contained in the file
 app.use("/images", express.static('public/images')); //Had to add a second one to allow images to render properly
+app.use("/scripts", express.static('public/scripts')); //Custom js files
 app.use(bodyParser.urlencoded({extended: true})); 
 var HTTP_PORT = process.env.PORT || 8080;
 app.use(function(req,res,next){

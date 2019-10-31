@@ -1,9 +1,10 @@
 <div class="row">
     <div class="col-md-12">
         <h2>Employees</h2>
+        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
         <hr />
         <div class="table-responsive">
-            <table class="table table-striped table-dark">
+            <table class="table table-striped table-dark" id="empTable">
                 <thead>
                     <tr>
                         <!--Table column names-->
@@ -22,7 +23,7 @@
                     {{#each employees}}
                     <tr>
                         <td>{{employeeNum}}</td>
-                        <td><a href="/employee/{{employeeNum}}">{{firstName}} &nbsp {{lastName}}</a></td>
+                        <td><a href="/employees/{{employeeNum}}">{{firstName}} &nbsp {{lastName}}</a></td>
                         <td><a href="mailto:{{email}}">{{email}}</a></td>
                         <td>{{addressStreet}} &nbsp {{addressCity}} &nbsp {{addressState}} &nbsp {{addressPostal}}</td>
                         <td><a href="/employees?manager="{{employeeManagerNum}}>{{employeeManagerNum}}</a></td>

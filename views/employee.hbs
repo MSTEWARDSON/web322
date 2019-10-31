@@ -22,7 +22,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -39,8 +38,6 @@
                         </div>
                     </div>
                 </div>
-
-
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
@@ -70,7 +67,6 @@
                     </div>
                 </div>
             </fieldset>
-
             <fieldset>
                 <legend>Company Information</legend>
                 <div class="row">
@@ -81,7 +77,6 @@
                                 {{#if employee.isManager}}checked{{/if}} />
                         </div>
                     </div>
-
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="employeeManagerNum">Employee's Manager Number:</label>
@@ -106,8 +101,10 @@
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
+                            <!--Have a bug here, department selection is not being correctly shown, so I just put the department value in the label-->
                             <label for="department">Department</label>
                             <select class="form-control" name="department" id="department">
+                                <option value="{{employee.department}}" hidden="hidden" selected="selected">{{employee.department}}</option>
                                 <option value="1" {{#equal data.department "1" }} selected {{/equal}}>Creative Services</option>
                                 <option value="2" {{#equal data.department "2" }} selected {{/equal}}>Product Development</option>
                                 <option value="3" {{#equal data.department "3" }} selected {{/equal}}>Marketing</option>
@@ -128,7 +125,6 @@
                         </div>
                     </div>
                 </div>
-
             </fieldset>
             <hr />
             <input type="submit" class="btn btn-primary pull-right" value="Update Employee" /><br /><br /><br />
